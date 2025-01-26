@@ -1,0 +1,297 @@
+Write the following queries:
+
+
+1. Display all items and their nutritional value along with their category.
+
+- SQL Statement: 
+
+SELECT products.name as p_name,
+	   category.name,
+	   nutritions.nutrition_id,
+	   nutritions.calories,
+	   nutritions.fats,
+	   nutritions.sugar
+FROM
+	products
+	
+INNER JOIN category on products.category_id = category.category_id
+INNER JOIN nutritions on products.product_id = nutritions.product_id
+
+- Output:
+   P_name	Category       N.ID Calories   Fats    Sugar
+Orange Juice	Beverages	1	120	0.2	20
+Chocolate Bar	Snacks		2	220	12	18
+Milk		Dairy		3	150	8	12
+Apple		Fruits		4	95	0.3	19
+Carrot		Vegetables	5	41	0.1	5
+Coca Cola	Beverages	6	140	0	39
+Pepsi		Beverages	7	150	0	41
+Water Bottle	Beverages	8	0	0	0
+Orange Soda	Beverages	9	160	0	44
+Iced Tea	Beverages	10	90	0	23
+Potato Chips	Snacks		11	160	10	1
+Pretzels	Snacks		12	110	1	1
+Popcorn		Snacks		13	120	5	0
+Granola Bar	Snacks		14	150	6	7
+Cookies		Snacks		15	250	12	18
+Cheese		Dairy		16	113	9	1
+Yogurt		Dairy		17	80	1.5	11
+Butter		Dairy		18	100	11	0
+Cream Cheese	Dairy		19	99	10	1
+Ice Cream	Dairy		20	270	14	28
+Banana		Fruits		21	105	0.3	14
+Grapes		Fruits		22	62	0.3	15
+Mango		Fruits		23	99	0.6	23
+Pineapple	Fruits		24	50	0.1	10
+Strawberries	Fruits		25	53	0.5	8
+
+
+
+2. Display all orders, and for each order, show the details of all products.
+
+- SQL statement:
+
+SELECT orders.order_id, orders.customer_name, orders.customer_ph, orders.date_time, orders.total_price,
+	   products.name as p_name, products.price, 
+	   products_orders.amount
+
+FROM
+	orders
+	
+JOIN products_orders on orders.order_id = products_orders.order_id
+JOIN products on products_orders.product_id = products.product_id
+
+- Output:
+Order_id Customer_name  customer_ph	   date_time	    total_price    p_name	price	amount
+
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Orange Juice	5.99	2
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Chocolate Bar	2.5	1
+2	Jane Smith	555-5678	2024-09-17 11:45	20.13	Milk		3.2	1
+3	Emily Davis	555-8765	2024-09-17 12:15	22.22	Apple		1.5	3
+4	Michael Johnson	555-4321	2024-09-17 13:00	15.15	Carrot		0.99	5
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Orange Juice	5.99	1
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Milk		3.2	2
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Apple		1.5	2
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Coca Cola	1.5	3
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Potato Chips	1.8	1
+2	Jane Smith	555-5678	2024-09-17 11:45	20.13	Pepsi		1.4	2
+2	Jane Smith	555-5678	2024-09-17 11:45	20.13	Pretzels	2.2	2
+3	Emily Davis	555-8765	2024-09-17 12:15	22.22	Water Bottle	0.99	1
+3	Emily Davis	555-8765	2024-09-17 12:15	22.22	Popcorn		1.99	2
+4	Michael Johnson	555-4321	2024-09-17 13:00	15.15	Orange Soda	1.7	1
+4	Michael Johnson	555-4321	2024-09-17 13:00	15.15	Granola Bar	1.5	2
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Iced Tea	2.0	1
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Cookies		3.0	1
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Cheese		4.5	1
+2	Jane Smith	555-5678	2024-09-17 11:45	20.13	Yogurt		1.25	3
+3	Emily Davis	555-8765	2024-09-17 12:15	22.22	Butter		3.75	2
+4	Michael Johnson	555-4321	2024-09-17 13:00	15.15	Cream Cheese	2.5	1
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Ice Cream	5.0	1
+1	John Doe	555-1234	2024-09-17 10:30	30.08	Banana		1.2	4
+2	Jane Smith	555-5678	2024-09-17 11:45	20.13	Grapes		2.99	2
+3	Emily Davis	555-8765	2024-09-17 12:15	22.22	Mango		1.75	3
+4	Michael Johnson	555-4321	2024-09-17 13:00	15.15	Pineapple	3.0	1
+5	Sarah Wilson	555-6789	2024-09-17 13:30	30.99	Strawberries	2.8	2
+
+
+3. Add an additional product to every order (use INSERT).
+
+- SQL statement: 
+
+
+INSERT INTO products (name, price, category_id) VALUES ('Plum Juice', 9.99, 1);
+
+INSERT INTO products_orders (order_id, product_id, amount)
+SELECT order_id, 26, 1
+FROM orders;
+
+-output: 
+
+* The first statement will add a new product on the products table:
+
+product_id	  name		price	category_id
+
+26		Plum Juice	9.99	     1
+
+* The second statement will add the new product to every order
+
+order_id	product_id	amount
+   1		  26		  1
+   2	       	  26	 	  1
+   3		  26		  1
+   4		  26 	  	  1
+   5		  26		  1
+
+4. Update the cost of all orders (quantity × product price) using UPDATE.
+
+-SQL statement: 
+
+UPDATE orders
+SET total_price = (
+    SELECT po.amount * p.price
+    FROM products_orders po
+    JOIN products p ON po.product_id = p.product_id
+    WHERE po.order_id = orders.order_id
+);
+
+
+- Original orders table:
+
+     order_id	   date_time		  address	customer_name	customer_ph	total_price	
+	1	2024-09-17 10:30	123 Main St	John Doe	 555-1234	  30.08	
+	2	2024-09-17 11:45	456 Oak St	Jane Smith	 555-5678	  20.13	
+	3	2024-09-17 12:15	789 Pine St	Emily Davis	 555-8765	  22.22	
+	4	2024-09-17 13:00	321 Elm St	Michael Johnson	 555-4321	  15.15	
+	5	2024-09-17 13:30	654 Maple St	Sarah Wilson	 555-6789	  30.99	
+
+- Output after the update: 
+	
+     order_id	   date_time		  address	customer_name	customer_ph	total_price	
+	1	2024-09-17 10:30	123 Main St	John Doe	 555-1234	  11.98	
+	2	2024-09-17 11:45	456 Oak St	Jane Smith	 555-5678	   3.23	
+	3	2024-09-17 12:15	789 Pine St	Emily Davis	 555-8765	   4.5	
+	4	2024-09-17 13:00	321 Elm St	Michael Johnson	 555-4321	   4.95	
+	5	2024-09-17 13:30	654 Maple St	Sarah Wilson	 555-6789	   5.99	
+
+
+
+5. What is the most expensive order? The cheapest? The average?
+
+-SQL Statements:
+
+
+- The most expensive order: 
+
+SELECT order_id, total_price
+FROM orders
+ORDER by total_price DESC
+LIMIT 1;
+
+	* Output:
+
+	order_id	total_price
+    	   1		   11.98
+
+- The cheapest order: 
+
+SELECT order_id, total_price
+FROM orders
+ORDER by total_price
+LIMIT 1;
+
+	* Output: 
+	order_id	total_price
+    	   2		   3.2
+
+
+- Average:
+
+SELECT avg(total_price) as Average
+FROM orders;
+
+	* Output: 
+	Average
+	 6.124
+
+6. Who is the customer that placed the most orders?
+
+- SQL Statement: 
+
+SELECT order_id, count(*) as odr_counter
+FROM orders
+GROUP by order_id
+ORDER by odr_counter DESC;
+
+- Output: 
+
+order_id	odr_counter
+  1	       	     1
+  2		     1
+  3	             1
+  4	             1
+  5	             1
+
+In this particular case each customer has only one order. 
+
+
+7. Which product was sold the most? The least? The average?
+
+
+- SQL Statement more sold: 
+
+SELECT p.name, sum(po.amount) as product_counter
+FROM products p
+JOIN products_orders po ON p.product_id = po.product_id
+GROUP by p.product_id, p.name
+ORDER by product_counter DESC
+LIMIT 1;
+
+
+	* Output:
+
+	name	product_counter
+	Apple		5
+
+
+- SQL Statement less sold: 
+
+SELECT p.name, sum(po.amount) as product_counter
+FROM products p
+JOIN products_orders po ON p.product_id = po.product_id
+GROUP by p.product_id, p.name
+ORDER by product_counter
+LIMIT 1;
+
+
+	* Output:
+
+	    name		product_counter
+	Chocolate Bar			1
+
+
+- SQL Statement average: 
+
+SELECT p.name, avg(po.amount) as product_avg
+FROM products p
+JOIN products_orders po ON p.product_id = po.product_id
+GROUP by p.product_id, p.name
+ORDER by product_avg  ASC
+LIMIT 1;
+
+
+	* Output:
+
+	    name		product_avg
+	Chocolate Bar		    1.0
+
+
+8. Which product category was sold the most? The least?
+
+- SQL Statement more sold: 
+
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN products_orders po ON p.product_id = po.product_id
+GROUP BY c.category_id, c.category_name
+ORDER BY total_category DESC
+LIMIT 1;
+
+	* Output more sold:
+
+	    name		total_category
+       	   Fruits	              17
+
+- SQL Statement less sold: 
+
+FROM categories c
+JOIN products p ON c.category_id = p.category_id
+JOIN products_orders po ON p.product_id = po.product_id
+GROUP BY c.category_id, c.category_name
+ORDER BY total_category DESC
+LIMIT 1;
+
+	* Output more sold:
+
+	    name		total_category
+       	  Vegetables			5
+	            
