@@ -290,7 +290,7 @@ GROUP BY c.category_id, c.category_name
 ORDER BY total_category DESC
 LIMIT 1;
 
-	* Output more sold:
+	* Output less sold:
 
 	    name		total_category
        	  Vegetables			5
